@@ -14,7 +14,7 @@ namespace InternshipFinder
         private static readonly HttpClient client = new HttpClient();
         static async Task Main(string[] args)
         {
-            string url = "https://www.graduates24.com/internshipprogrammes?page=3";
+            string url = "https://www.graduates24.com/internshipprogrammes?page=1";
             string html = await GetPageAsync(url);
             ParseHtml(html);
             Console.ReadLine();
@@ -34,10 +34,12 @@ namespace InternshipFinder
             HtmlDocument document = new HtmlDocument();
             document.LoadHtml(html);
             var nodesh = document.DocumentNode.SelectNodes("//h4");
+            bool found = false;
             foreach (var node in nodesh)
             {
                 if (node.InnerText.Contains("IT"))
                 {
+                    found = true;
                     HtmlNode firstChild = node.SelectSingleNode(".//a[@href]");
 
                     Console.WriteLine(node.InnerText);
@@ -45,6 +47,10 @@ namespace InternshipFinder
                     Console.WriteLine();
                 }
             }
+            if(found == false)
+            {
+                Console.WriteLine("No Results");
+            }           
         }
     }
 }

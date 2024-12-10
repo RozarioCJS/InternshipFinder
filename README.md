@@ -4,5 +4,5 @@ Using HtmlAgilityPack
 it is only able to scrape through one page
 
 <h1>Future Goals</h1>
-- scrape Multiple Pages (X)
-- Present the data better (X)
+<ul>- scrape Multiple Pages (X)</ul>
+<ul>- Present the data better (X)</ul>

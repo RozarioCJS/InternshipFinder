@@ -12,11 +12,35 @@ namespace InternshipFinder
     internal class Program
     {
         private static readonly HttpClient client = new HttpClient();
-        static async Task Main(string[] args)
+        static async Task Main()
         {
-            string url = "https://www.graduates24.com/internshipprogrammes?page=1";
+            Console.Title = "Internship Finder";
+            Console.Write("Please enter a url from graduates24: ");
+
+            string url = Console.ReadLine();
             string html = await GetPageAsync(url);
             ParseHtml(html);
+
+            Console.Write("Would you like to try again?(Y/N): ");
+            string answer = Console.ReadLine().ToUpper();
+            if (answer == "Y")
+            {
+                Console.Write("Keep previous results?(Y/N): ");
+                string kr = Console.ReadLine().ToUpper();
+                if(kr == "Y")
+                {
+                    await Main();
+                }
+                else
+                {
+                    Console.Clear();
+                    await Main();
+                }
+            }
+            else
+            {
+                Environment.Exit(0);
+            }
             Console.ReadLine();
         }
 
@@ -35,9 +59,15 @@ namespace InternshipFinder
             document.LoadHtml(html);
             var nodesh = document.DocumentNode.SelectNodes("//h4");
             bool found = false;
+            string KeyWord;
+            Console.WriteLine();
+            Console.Write("Please enter a term you would like to search for:");
+            KeyWord = Console.ReadLine();
+            Console.WriteLine();
+
             foreach (var node in nodesh)
             {
-                if (node.InnerText.Contains("IT"))
+                if (node.InnerText.Contains(KeyWord))
                 {
                     found = true;
                     HtmlNode firstChild = node.SelectSingleNode(".//a[@href]");
@@ -47,10 +77,10 @@ namespace InternshipFinder
                     Console.WriteLine();
                 }
             }
-            if(found == false)
+            if (found == false)
             {
                 Console.WriteLine("No Results");
-            }           
+            }
         }
     }
 }
